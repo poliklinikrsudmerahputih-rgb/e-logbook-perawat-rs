@@ -97,3 +97,40 @@ Logika Input (Dropdown + No. RM).
 Logika Output (Otomatisasi Tanda Tangan & Header).
 
 Apakah Anda ingin saya buatkan draf "Daftar Menu" atau "Site Map" (peta halaman) untuk web ini? Jadi Anda tahu nanti ada tombol apa saja di sidebar-nya.
+DOKUMEN SPESIFIKASI TEKNIS: E-LOGBOOK PERAWAT RS
+1. Konsep Utama
+Tujuan: Aplikasi web logbook mandiri untuk perawat yang cepat, ringan, dan gratis biaya operasional.
+
+Teknologi: Frontend (React/Vue/Vite), Database (Supabase/PostgreSQL), Hosting (Vercel/Netlify), Source Code (GitHub).
+
+Prinsip: No Spreadsheet. Menggunakan database relasional untuk performa maksimal.
+
+2. Arsitektur Data (Supabase)
+Tabel users: Menyimpan profil lengkap (Nama, NIP, Jabatan, Golongan, Unit Kerja, Kab./Kota, Data Atasan, Password default 123456).
+
+Tabel master_kegiatan: Daftar rincian kegiatan Jabfung perawat dan Target Tahunan.
+
+Tabel logbook_harian: Transaksi input (Tanggal, ID Kegiatan, No. RM Pasien, Jumlah, Link Bukti Fisik).
+
+Tabel access_tokens: Mengelola link unik (view-only) untuk Penilai/E-Kinerja.
+
+3. Fitur Utama & Logika Bisnis
+Input Cepat: Searchable dropdown untuk butir kegiatan, input Nomor RM, dan upload bukti fisik (multiformat: .jpg, .pdf, .doc).
+
+Otomatisasi Folder: Bukti fisik disimpan di Supabase Storage dengan struktur folder otomatis: NIP/Tahun/Bulan/Kode_Kegiatan/Nama_File.
+
+Logika Tanggal: Sistem otomatis menentukan tanggal akhir bulan (termasuk kabisat) untuk titimangsa laporan.
+
+Dashboard Real-time: Menghitung otomatis akumulasi realisasi harian untuk memotong sisa target tahunan.
+
+4. Modul Laporan (Print Preview)
+Rekap Bulanan/Triwulanan/Tahunan: Tabel matriks (Baris: Kegiatan, Kolom: Tanggal 1-31).
+
+Header & Footer: Header identitas dinamis. Footer memuat tempat (Kab./Kota), tanggal akhir bulan, nama & NIP pembuat, serta nama & NIP penilai secara otomatis.
+
+Link Eksternal: Fitur "Copy Link" untuk ditempel di E-Kinerja. Link ini membuka halaman laporan khusus tanpa sidebar/tombol input (Read-Only).
+
+5. Aturan Keamanan
+RLS (Row Level Security): User hanya bisa memodifikasi data miliknya sendiri.
+
+Token Access: Penilai hanya bisa melihat data yang sudah ditentukan melalui token unik di URL.
